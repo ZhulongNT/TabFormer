@@ -1,6 +1,7 @@
 # Core ML Libraries
 torch>=2.0.0
 transformers>=4.30.0
+transformers[torch]
 numpy>=1.21.0
 
 # Data Processing
