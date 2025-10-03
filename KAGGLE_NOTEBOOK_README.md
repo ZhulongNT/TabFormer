@@ -17,7 +17,7 @@
 
 The notebook includes all necessary components:
 
-1. **Package Installation** - Automatically installs PyTorch, Transformers, and dependencies
+1. **Package Installation** - Automatically installs PyTorch (CUDA 11.8), Transformers with torch extras, and dependencies
 2. **Vocabulary System** - Field-aware tokenization for tabular data
 3. **Dataset Processing** - Credit card transaction encoding and sequence preparation
 4. **Model Architecture** - Complete TabFormer BERT implementation:
