@@ -1,0 +1,11 @@
+# Minimal requirements for TabFormer - Essential packages only
+# For a complete list with all dependencies, see pip_freeze_output.txt
+
+# Core ML Libraries
+torch>=2.0.0
+transformers>=4.30.0
+
+# Data Processing
+pandas>=1.3.0
+scikit-learn>=1.0.0
+numpy>=1.21.0
