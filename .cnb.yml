@@ -5,6 +5,6 @@ main:
         image: python:3.15-rc-bookworm
       stages:
         - apt-get update && apt-get install -y tar build-essential gfortran cmake pkg-config ninja-build libopenblas-dev liblapack-dev
-        - pip install --prefer-binary --cache-dir=.pip-cache -r pip_freeze_output.txt
+        - pip install numpy scipy pandas matplotlib --no-index --find-links https://wheel-index.python.org/simple/ && pip install --prefer-binary --cache-dir=.pip-cache -r pip_freeze_output.txt
         - tar -xzf ./data/credit_card/transactions.tgz -C ./data/credit_card card_transaction.v1.csv
         - python main.py --do_train --mlm --field_ce --lm_type bert --field_hs 64 --data_type card --output_dir ./output
