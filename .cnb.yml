@@ -1,0 +1,38 @@
+# CNB pipeline: Build on Debian bookworm, install Python 3.13.5, run training, push results
+main:
+  push:
+    - name: train-and-push
+      stages:
+        - name: run
+          script: |
+            set -euo pipefail
+            export DEBIAN_FRONTEND=noninteractive
+            # 1) System deps for building Python via pyenv
+            apt-get update
+            apt-get install -y --no-install-recommends \
+              git curl ca-certificates build-essential \
+              libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
+              libsqlite3-dev libffi-dev liblzma-dev tk-dev uuid-dev \
+              wget
+            rm -rf /var/lib/apt/lists/*
+
+            # 2) Install Python 3.13.5 with pyenv (Debian bookworm default image)
+            export PYENV_ROOT="/opt/pyenv"
+            git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+            export PATH="$PYENV_ROOT/bin:$PATH"
+            eval "$(pyenv init -)"
+            pyenv install -s 3.13.5
+            pyenv global 3.13.5
+            python --version
+            pip --version
+
+            # 3) Install dependencies from pinned file
+            python -m pip install --upgrade pip
+            python -m pip install -r pip_freeze_output.txt
+
+            # 4) Run training
+            python main.py --do_train --mlm --field_ce --lm_type bert --field_hs 64 --data_type card --output_dir ./output
+
+            # 5) Push outputs to result branch
+            chmod +x scripts/push_results.sh
+            ./scripts/push_results.sh
