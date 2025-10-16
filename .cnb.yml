@@ -4,6 +4,7 @@ main:
     - docker:
         image: python:3.15-rc-bookworm
       stages:
-        - pip install -r requirements.txt
-        - cd my-tabformer
+        - pip install -r pip_freeze_output.txt
+        - apt-get update && apt-get install -y tar
+        - tar -xzf ./data/credit_card/transactions.tgz -C ./data/credit_card card_transaction.v1.csv
         - python main.py --do_train --mlm --field_ce --lm_type bert --field_hs 64 --data_type card --output_dir ./output
